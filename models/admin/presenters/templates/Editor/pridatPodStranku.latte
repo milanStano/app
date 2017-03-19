@@ -1,0 +1,247 @@
+
+{block head}
+    <script src="//cloud.tinymce.com/stable/tinymce.min.js"></script>
+
+    <script>
+
+        tinymce.init({
+            selector: 'textarea',
+            theme: "modern",
+            plugins: [
+                "autoresize advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
+                "table contextmenu directionality emoticons paste textcolor "
+            ],
+            autoresize_on_init: true,
+            toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect  fontselect fontsizeselect",
+            toolbar2: "| link unlink anchor | image media | forecolor backcolor  | print preview code  | link image ",
+
+            toolbar: "link | image", file_browser_callback: RoxyFileBrowser
+        });
+        function RoxyFileBrowser(field_name, url, type, win) {
+            var roxyFileman = '/fileman/index.php';
+            if (roxyFileman.indexOf("?") < 0) {
+                roxyFileman += "?type=" + type;
+            }
+            else {
+                roxyFileman += "&type=" + type;
+            }
+            roxyFileman += '&input=' + field_name + '&value=' + win.document.getElementById(field_name).value;
+            if(tinyMCE.activeEditor.settings.language){
+                roxyFileman += '&langCode=' + tinyMCE.activeEditor.settings.language;
+            }
+            tinyMCE.activeEditor.windowManager.open({
+                file: roxyFileman,
+                title: 'Roxy Fileman',
+                width: 850,
+                height: 650,
+                resizable: "yes",
+                plugins: "media",
+                inline: "yes",
+                close_previous: "no"
+            }, {     window: win,     input: field_name    });
+            return false;
+        }
+        function SeoUrl(nazov) {
+            $('#nazov_dokumentu').removeClass('valid');
+            $('#nazov_dokumentu').removeClass('invalid');
+            $('#errorNazov').remove();
+
+            if(nazov==""){
+                $('#nazov_dokumentu').addClass('invalid');
+
+                $('#nazov_dokumentuD').append('<p id="errorNazov" class="text-danger"><i class="fa fa-times fa-2x" aria-hidden="true"></i>Názov dokumentu nesmie byť prázdny</p>')
+            }
+            else{
+                $.nette.ajax({
+                    url: {link Seo!},
+                    data: {
+                        nazov: nazov
+                    },
+                    success:function (payload) {
+
+                        $('#seo').val(payload.seo);
+                        $('#seoD label').addClass('active');
+
+                        $('#nazov_dokumentu').addClass('valid');
+
+
+                    }
+
+
+                });
+            }
+        }
+        function SeoUrlUrl(nazov) {
+            $('#seook').remove();
+            $('#errorSeo').remove();
+            if(nazov!=""){
+                $('#seoD').append('<div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" "></div>');
+                $.nette.ajax({
+                    url: {link SeoIsOk!},
+                    data: {
+                        nazov: nazov
+                    },
+                    success:function (payload) {
+
+
+                        if(payload.ok==true){
+
+
+
+                        }
+                        else{
+                            $('#seo').addClass('invalid');
+                            $('#seoD').append('<p id="errorSeo" class="text-danger"><i class="fa fa-times fa-2x" aria-hidden="true"></i>Url nie je plataná alebo sa už používa !</p>')
+
+                        }
+                        $('#p2').remove();
+
+
+                    }
+
+
+
+                });
+            }else
+            {
+                $('#seo').addClass('invalid');
+                $('#seoD').append('<p id="errorSeo" class="text-danger"><i class="fa fa-info-circle fa-2x" aria-hidden="true"></i>Ak url ostane prázdna vygeneruje sa z názvu dokumentu</p>')
+
+            }
+        }
+
+
+    </script>
+{/block}
+{block title}Editor dokumentu{/block}
+
+{block content}
+
+ <br>
+    <br>
+    <br>
+    <div class="ajax">
+        <!-- MDL Progress Bar with Buffering -->
+
+
+        <form actition="" method="post" class="ajax" id="frm-editSite">
+
+
+            <div class="col-md-3 md-form" id="nazov_dokumentuD">
+
+                <input class="form-control " type="text" data-toggle="tooltip" name="nazov_dokumentu" id="nazov_dokumentu"  title="Zadajte názov dokumentu" onblur="SeoUrl(this.value)" >
+                <label class="" for="nazov_dokumentu">Názov dokumentu</label>
+
+
+            </div>
+            <div class="col-md-3 md-form" id="seoD">
+                <input class="form-control validate" data-placement="bottom" data-toggle="tooltip" title="Používajte len malé písmená bez mäkčeňov a dĺžňov a..z a čísla 0..9, alebo pomlčku -"type="text" id="seo" name="seo_url"onblur="SeoUrlUrl(this.value)" >
+                <label class="" for="sample3">SEO/URL</label>
+
+
+
+            </div>
+            <div class="col-md-2 md-form">
+                <input class="form-control" type="text" id="tag" name="tag">
+                <label class="" for="sample3">Tagy(oddelené čiarkou)</label>
+            </div>
+    </div>
+    <div class="col-md-12 " >
+
+        <h3>Nastavenie zverejnenia</h3>
+
+        <div class='col-md-3'>
+            <div class="form-group">
+                <div class='input-group date' >
+                          <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                    <input type='text' data-toggle="tooltip" title="Ak nechte dokument zverejniť nechajte toto políčko prázdne " class="form-control" id='datumOd' name="datumOd"/>
+                    <label class="" for="sample3">Začiatok zverejnenia</label>
+
+                </div>
+            </div>
+        </div>
+        <div class='col-md-3'>
+            <div class="form-group">
+                <div class='input-group date' >
+                          <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                    <input type='text' data-toggle="tooltip" title="Ak chcete dokument ponechať zverejnený nechajte toto políčko prázdne" class="form-control" id='datumDo' name="datumDo"/ >
+                    <label class="" for="sample3">Koniec zverejnenia</label>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+<br>
+<div class="col-md-12">
+    <label class="" for="obsah_dokumentu"><h4>Obsah dokumentu</h4></label>
+    <textarea id="obsah_dokumentu" class="md-textarea" name="obsah"></textarea>
+    <button class="ajax btn btn-primary "  id="submitForm" type="submit" >
+        <input type="hidden"  class="ajax"  name="_do" value="editSite-submit">
+        Uložiť zmeny
+</div>
+
+
+
+
+
+    </button>
+    </form>
+
+
+
+
+
+
+    </div>
+
+{/block}
+{block skript}
+
+    <script src="{$basePath}/js/moment.min.js"></script>
+    <link rel="stylesheet" href="{$basePath}/css/bootstrap-datetimepicker.min.css" />
+    <script src="{$basePath}/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datumOd').datetimepicker({
+                format : 'DD.MM.YYYY H:m:s'
+
+            });
+            $('#datumDo').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                format : 'DD.MM.YYYY H:m:s'
+
+            });
+            $("#datumOd").on("dp.change", function (e) {
+                $('#datumDo').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datumDo").on("dp.change", function (e) {
+                $('#datumOd').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+
+    </script>
+{/block}
+
+
+

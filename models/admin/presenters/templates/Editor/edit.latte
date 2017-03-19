@@ -1,0 +1,96 @@
+{block content}
+
+<br>
+<br>
+<br>
+<div class="ajax">
+    <!-- MDL Progress Bar with Buffering -->
+
+
+    <form actition="" method="post" class="ajax" id="frm-editSite">
+
+
+        <div class="col-md-3 md-form" id="nazov_dokumentuD">
+
+            <input class="form-control " type="text" data-toggle="tooltip" name="nazov_dokumentu" id="nazov_dokumentu"  title="Zadajte názov dokumentu" onblur="SeoUrl(this.value)" >
+            <label class="" for="nazov_dokumentu">Názov dokumentu</label>
+
+
+        </div>
+        <div class="col-md-3 md-form" id="seoD">
+            <input class="form-control validate" data-placement="bottom" data-toggle="tooltip" title="Používajte len malé písmená bez mäkčeňov a dĺžňov a..z a čísla 0..9, alebo pomlčku -"type="text" id="seo" name="seo_url"onblur="SeoUrlUrl(this.value)" >
+            <label class="" for="sample3">SEO/URL</label>
+
+
+
+        </div>
+        <div class="col-md-2 md-form">
+            <input class="form-control" type="text" id="tag" name="tag">
+            <label class="" for="sample3">Tagy(oddelené čiarkou)</label>
+        </div>
+</div>
+<div class="col-md-12 " >
+
+    <h3>Nastavenie zverejnenia</h3>
+
+    <div class='col-md-3'>
+        <div class="form-group">
+            <div class='input-group date' >
+                          <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <input type='text' data-toggle="tooltip" title="Ak nechte dokument zverejniť nechajte toto políčko prázdne " class="form-control" id='datumOd' name="datumOd"/>
+                <label class="" for="sample3">Začiatok zverejnenia</label>
+
+            </div>
+        </div>
+    </div>
+    <div class='col-md-3'>
+        <div class="form-group">
+            <div class='input-group date' >
+                          <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <input type='text' data-toggle="tooltip" title="Ak chcete dokument ponechať zverejnený nechajte toto políčko prázdne" class="form-control" id='datumDo' name="datumDo"/ >
+                <label class="" for="sample3">Koniec zverejnenia</label>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<br>
+<div class="col-md-12">
+    <label class="" for="obsah_dokumentu"><h4>Obsah dokumentu</h4></label>
+    <textarea id="obsah_dokumentu" class="md-textarea" name="obsah"></textarea>
+    <button class="ajax btn btn-primary "  id="submitForm" type="submit" >
+        <input type="hidden"  class="ajax"  name="_do" value="editSite-submit">
+        Uložiť zmeny
+</div>
+
+
+
+
+
+</button>
+</form>
+
+
+
+
+
+
+</div>
+
+{/block}

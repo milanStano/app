@@ -1,0 +1,43 @@
+{block title}
+    Zoznam podstránok
+    {/block}
+{block content}
+
+
+{foreach $podstranky as $podstranka}
+    <div class="col-md-3">
+    <!--Card-->
+
+    <div class="card hvr-curl-top-left hvr-grow-shadow ">
+
+        <!--Card image-->
+
+        <!--/.Card image-->
+
+        <!--Card content-->
+        <div class="card-block">
+            <!--Title-->
+            <h4 class="card-title">   {$podstranka->title} | {$podstranka->seo_url}</h4>
+            <!--Text-->
+            <p class="card-text">Vytvorené: {$podstranka->create_date_time}
+
+            </p>
+            <p>Napolsledy upravil: {$podstranka->name } {$podstranka->surname}<br> {$podstranka->update_date_time}</p>
+
+            <a n:href="remove! id=>$podstranka->id_document" ><i class="fa fa-remove fa-3x pull-right" aria-hidden="true"></i></a>
+
+            <a n:href="Editor:edit" ><i class="fa fa-edit fa-3x " aria-hidden="true"></i></a>
+
+
+
+            </div>
+
+        </div>
+        <!--/.Card content-->
+
+    </div>
+    <!--/.Card-->
+
+{/foreach}
+
+{/block}
